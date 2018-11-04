@@ -152,7 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="F1b.cpp" />
+    <ClCompile Include="F1b.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\XDefs.h" />

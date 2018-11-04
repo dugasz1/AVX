@@ -156,7 +156,7 @@
     <ClInclude Include="..\XDefs.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="F1a.cpp" />
+    <ClCompile Include="F1a.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

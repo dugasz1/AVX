@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="F2.cpp" />
+    <ClCompile Include="F2.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\XDefs.h" />
