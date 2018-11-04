@@ -1,6 +1,7 @@
 #define BMP_HEADER 122
 #define BMP_DATA 5992704
 #define BMP_DATA_BEGIN 0x7A
+#define TWO_GB_SIZE 2147483648
 
 #ifdef _MSC_VER && !__INTEL_COMPILER
 	#define xAllignedAlloc(align, size) _aligned_malloc(size, align)
