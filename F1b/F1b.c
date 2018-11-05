@@ -44,27 +44,26 @@ int main()
 	{
 		//Img1
 		__m256i mm_a_l = _mm256_load_si256((__m256i *)(img1_buff + i));
-		__m256i mm_a_h = _mm256_load_si256(&mm_a_l);
-		//Low part of a
-		mm_a_l = _mm256_permute4x64_epi64(mm_a_l, 0xD8); //0xD8
+		__m256i mm_a_h;
+
+		mm_a_l = _mm256_permute4x64_epi64(mm_a_l, 0xD8);
+		mm_a_h = _mm256_unpackhi_epi8(mm_a_l, zeros);
 		mm_a_l = _mm256_unpacklo_epi8(mm_a_l, zeros);
+
 		mm_a_l = _mm256_mullo_epi16(mm_a_l, mm_eighty);
-		//High part of a
-		mm_a_h = _mm256_permute4x64_epi64(mm_a_h, 0x72);
-		mm_a_h = _mm256_unpacklo_epi8(mm_a_h, zeros);
 		mm_a_h = _mm256_mullo_epi16(mm_a_h, mm_eighty);
 
 		//Img2
 		__m256i mm_b_l = _mm256_load_si256((__m256i *)(img2_buff + i));
-		__m256i mm_b_h = _mm256_load_si256(&mm_b_l);
-		//Low part of b
+		__m256i mm_b_h;
+
 		mm_b_l = _mm256_permute4x64_epi64(mm_b_l, 0xD8);
+		mm_b_h = _mm256_unpackhi_epi8(mm_b_l, zeros);
 		mm_b_l = _mm256_unpacklo_epi8(mm_b_l, zeros);
+
 		mm_b_l = _mm256_mullo_epi16(mm_b_l, mm_twenty);
-		//High part of b
-		mm_b_h = _mm256_permute4x64_epi64(mm_b_h, 0x72); //0xD8
-		mm_b_h = _mm256_unpacklo_epi8(mm_b_h, zeros);
 		mm_b_h = _mm256_mullo_epi16(mm_b_h, mm_twenty);
+
 
 		//Calculation
 		//a Low + b Low
