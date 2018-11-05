@@ -24,13 +24,19 @@ int main()
 		_mm256_store_ps(result_buff, a);
 		__m256 mask = _mm256_cmp_ps(a, b, _CMP_GT_OQ);
 		_mm256_store_ps(result_buff, mask);
-		__m256 greather = _mm256_and_ps(a, mask);
+		a = _mm256_and_ps(a, mask);
 		_mm256_store_ps(result_buff, a);
-		result = _mm256_add_ps(result, greather);
+		result = _mm256_add_ps(result, a);
 	}
 	_mm256_store_ps(result_buff, result);
+
+	float sum = 0;
 	for (i = 0; i < 8; i++)
 	{
-		printf("%d.: %f \n", i, result_buff[i]);
+		sum += result_buff[i];
+		//printf("%d.: %f \n", i, result_buff[i]);
 	}
+	printf("%f", sum);
+
+	return 0;
 }
