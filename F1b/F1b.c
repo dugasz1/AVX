@@ -35,27 +35,52 @@ int main()
 	__m256i mm_eighty = _mm256_set1_epi16(eighty);
 	__m256i mm_twenty = _mm256_set1_epi16(twenty);
 
+	unsigned char* t = xAllignedAlloc(32, 32);
+	for (size_t i = 0; i < 32; i++)
+	{
+		t[i] = i + 1;
+	}
 	for (i = 0; i < 5992704; i += 16)
 	{
-		//printf("Address: %p | Val: %u \n", img1_buff + i, *(img1_buff+i) );
-		__m256i mm_a = _mm256_loadu_si256((__m256i *)(img1_buff + i));
-		mm_a = _mm256_permute4x64_epi64(mm_a, 0xD8); //0xD8
-		mm_a = _mm256_unpacklo_epi8(mm_a, zeros);
-		mm_a = _mm256_mullo_epi16(mm_a, mm_eighty);
-		_mm256_store_si256((__m256i *)(result_buff), mm_a);
+		//Img1
+		__m256i mm_a_l = _mm256_load_si256((__m256i *)(img1_buff + i));
+		__m256i mm_a_h = _mm256_load_si256(&mm_a_l);
+		//Low part of a
+		mm_a_l = _mm256_permute4x64_epi64(mm_a_l, 0xD8); //0xD8
+		mm_a_l = _mm256_unpacklo_epi8(mm_a_l, zeros);
+		mm_a_l = _mm256_mullo_epi16(mm_a_l, mm_eighty);
+		//High part of a
+		mm_a_h = _mm256_permute4x64_epi64(mm_a_h, 0x72);
+		mm_a_h = _mm256_unpacklo_epi8(mm_a_h, zeros);
+		mm_a_h = _mm256_mullo_epi16(mm_a_h, mm_eighty);
 
-		__m256i mm_b = _mm256_loadu_si256((__m256i *)(img2_buff + i));
-		mm_b = _mm256_permute4x64_epi64(mm_b, 0xD8);
-		mm_b = _mm256_unpacklo_epi8(mm_b, zeros);
-		mm_b = _mm256_mullo_epi16(mm_b, mm_twenty);
-		_mm256_store_si256((__m256i *)(result_buff), mm_b);
+		//Img2
+		__m256i mm_b_l = _mm256_load_si256((__m256i *)(img2_buff + i));
+		__m256i mm_b_h = _mm256_load_si256(&mm_b_l);
+		//Low part of b
+		mm_b_l = _mm256_permute4x64_epi64(mm_b_l, 0xD8);
+		mm_b_l = _mm256_unpacklo_epi8(mm_b_l, zeros);
+		mm_b_l = _mm256_mullo_epi16(mm_b_l, mm_twenty);
+		//High part of b
+		mm_b_h = _mm256_permute4x64_epi64(mm_b_h, 0x72); //0xD8
+		mm_b_h = _mm256_unpacklo_epi8(mm_b_h, zeros);
+		mm_b_h = _mm256_mullo_epi16(mm_b_h, mm_eighty);
 
-		__m256i mm_c = _mm256_add_epi16(mm_a, mm_b);
-		_mm256_store_si256((__m256i *)(result_buff), mm_c);
-		mm_c = _mm256_srli_epi16(mm_c, 8);
-		mm_c = _mm256_packus_epi16(mm_c, zeros);
-		mm_c = _mm256_permute4x64_epi64(mm_c, 0xD8);
-		_mm256_storeu_si256((__m256i *)(out_buff + i), mm_c);
+		//Calculation
+		//a Low + b Low
+		__m256i mm_c_l = _mm256_add_epi16(mm_a_l, mm_b_l);
+		mm_c_l = _mm256_srli_epi16(mm_c_l, 8);
+		mm_c_l = _mm256_packus_epi16(mm_c_l, zeros);
+		mm_c_l = _mm256_permute4x64_epi64(mm_c_l, 0xD8);
+		//a Low + b Low
+		__m256i mm_c_h = _mm256_add_epi16(mm_a_h, mm_b_h);
+		mm_c_h = _mm256_srli_epi16(mm_c_h, 8);
+		mm_c_h = _mm256_packus_epi16(mm_c_h, zeros);
+		mm_c_h = _mm256_permute4x64_epi64(mm_c_h, 0x8D);
+
+		__m256i mm_merged = _mm256_or_si256(mm_c_l, mm_c_h);
+
+		_mm256_store_si256((__m256i *)(out_buff + i), mm_merged);
 	}
 
 	fwrite(bmp_header, BMP_HEADER, 1, img_out);
