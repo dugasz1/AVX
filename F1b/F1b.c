@@ -37,13 +37,14 @@ int main()
 
 	for (i = 0; i < 5992704; i += 16)
 	{
-		__m256i mm_a = _mm256_load_si256((__m256i *)(img1_buff + i));
+		//printf("Address: %p | Val: %u \n", img1_buff + i, *(img1_buff+i) );
+		__m256i mm_a = _mm256_loadu_si256((__m256i *)(img1_buff + i));
 		mm_a = _mm256_permute4x64_epi64(mm_a, 0xD8); //0xD8
 		mm_a = _mm256_unpacklo_epi8(mm_a, zeros);
 		mm_a = _mm256_mullo_epi16(mm_a, mm_eighty);
 		_mm256_store_si256((__m256i *)(result_buff), mm_a);
 
-		__m256i mm_b = _mm256_load_si256((__m256i *)(img2_buff + i));
+		__m256i mm_b = _mm256_loadu_si256((__m256i *)(img2_buff + i));
 		mm_b = _mm256_permute4x64_epi64(mm_b, 0xD8);
 		mm_b = _mm256_unpacklo_epi8(mm_b, zeros);
 		mm_b = _mm256_mullo_epi16(mm_b, mm_twenty);
@@ -54,7 +55,7 @@ int main()
 		mm_c = _mm256_srli_epi16(mm_c, 8);
 		mm_c = _mm256_packus_epi16(mm_c, zeros);
 		mm_c = _mm256_permute4x64_epi64(mm_c, 0xD8);
-		_mm256_store_si256((__m256i *)(out_buff + i), mm_c);
+		_mm256_storeu_si256((__m256i *)(out_buff + i), mm_c);
 	}
 
 	fwrite(bmp_header, BMP_HEADER, 1, img_out);
