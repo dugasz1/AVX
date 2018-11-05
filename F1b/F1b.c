@@ -11,8 +11,8 @@ int main()
 	FILE *img1, *img2, *img_out;
 	
 	int i;
-	short eighty = 205; //round(256 * 0,8)
-	short twenty = 51; //round(256 * 0,2)
+	short eighty = 256 * 0.8; //round(256 * 0,8)
+	short twenty = 255 - eighty; //round(256 * 0,2)
 
 	//5992826 - 122 = 5992704 | 1632 x 1224 x 3 = 5992704
 	img1_buff = (unsigned char *)xAllignedAlloc(32, 5992704); 
