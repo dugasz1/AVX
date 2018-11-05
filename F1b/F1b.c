@@ -35,12 +35,12 @@ int main()
 	__m256i mm_eighty = _mm256_set1_epi16(eighty);
 	__m256i mm_twenty = _mm256_set1_epi16(twenty);
 
-	unsigned char* t = xAllignedAlloc(32, 32);
-	for (size_t i = 0; i < 32; i++)
-	{
-		t[i] = i + 1;
-	}
-	for (i = 0; i < 5992704; i += 16)
+	//unsigned char* t = xAllignedAlloc(32, 32);
+	//for (size_t i = 0; i < 32; i++)
+	//{
+	//	t[i] = i + 1;
+	//}
+	for (i = 0; i < 5992704; i += 32)
 	{
 		//Img1
 		__m256i mm_a_l = _mm256_load_si256((__m256i *)(img1_buff + i));
@@ -64,7 +64,7 @@ int main()
 		//High part of b
 		mm_b_h = _mm256_permute4x64_epi64(mm_b_h, 0x72); //0xD8
 		mm_b_h = _mm256_unpacklo_epi8(mm_b_h, zeros);
-		mm_b_h = _mm256_mullo_epi16(mm_b_h, mm_eighty);
+		mm_b_h = _mm256_mullo_epi16(mm_b_h, mm_twenty);
 
 		//Calculation
 		//a Low + b Low
@@ -72,7 +72,7 @@ int main()
 		mm_c_l = _mm256_srli_epi16(mm_c_l, 8);
 		mm_c_l = _mm256_packus_epi16(mm_c_l, zeros);
 		mm_c_l = _mm256_permute4x64_epi64(mm_c_l, 0xD8);
-		//a Low + b Low
+		//a High + b High
 		__m256i mm_c_h = _mm256_add_epi16(mm_a_h, mm_b_h);
 		mm_c_h = _mm256_srli_epi16(mm_c_h, 8);
 		mm_c_h = _mm256_packus_epi16(mm_c_h, zeros);

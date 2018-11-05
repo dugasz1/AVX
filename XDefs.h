@@ -3,7 +3,11 @@
 #define BMP_DATA_BEGIN 0x7A
 #define TWO_GB_SIZE 2147483648
 
+#define PERMUTE_LOW_MASK 0x72
+#define UNPERMUTE_LOW_MASK 0x72
 #define PERMUTE_HIGH_MASK 0x72
+#define UNPERMUTE_HIGH_MASK 0x8D
+
 
 #if _MSC_VER && !__INTEL_COMPILER
 	#pragma message ("Compiler: MSC")
