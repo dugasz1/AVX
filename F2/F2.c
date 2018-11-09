@@ -21,11 +21,8 @@ int main()
 	for (i = 0; i < TWO_GB_SIZE / 4; i += 8)
 	{
 		__m256 a = _mm256_load_ps(buffer + i);
-		_mm256_store_ps(result_buff, a);
-		__m256 mask = _mm256_cmp_ps(a, b, _CMP_GT_OQ);
-		_mm256_store_ps(result_buff, mask);
+		__m256 mask = _mm256_cmp_ps(b, a, _CMP_GT_OQ);
 		a = _mm256_and_ps(a, mask);
-		_mm256_store_ps(result_buff, a);
 		result = _mm256_add_ps(result, a);
 	}
 	_mm256_store_ps(result_buff, result);
@@ -34,7 +31,7 @@ int main()
 	for (i = 0; i < 8; i++)
 	{
 		sum += result_buff[i];
-		//printf("%d.: %f \n", i, result_buff[i]);
+		printf("%d.: %f \n", i, result_buff[i]);
 	}
 	printf("%f", sum);
 
