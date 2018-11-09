@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <immintrin.h>
 #include "../XDefs.h"
+#define LIMIT 5.21
 
 int main()
 {
 	FILE* f;
 	int i;
 	float *buffer, *result_buff;
-	float limit[] = { 5.21, 5.21, 5.21, 5.21, 5.21, 5.21, 5.21, 5.21 };
 	buffer = (float*)xAllignedAlloc(32, TWO_GB_SIZE);
 	result_buff = (float*)xAllignedAlloc(32, 32);
 
@@ -17,13 +17,13 @@ int main()
 	fread(buffer, TWO_GB_SIZE, 1, f);
 
 	__m256 result = _mm256_setzero_ps();
-	__m256 b = _mm256_load_ps(limit);
+	__m256 mm_limit = _mm256_set1_ps(LIMIT);
 	for (i = 0; i < TWO_GB_SIZE / 4; i += 8)
 	{
-		__m256 a = _mm256_load_ps(buffer + i);
-		__m256 mask = _mm256_cmp_ps(b, a, _CMP_GT_OQ);
-		a = _mm256_and_ps(a, mask);
-		result = _mm256_add_ps(result, a);
+		__m256 mm_a = _mm256_load_ps(buffer + i);
+		__m256 mask = _mm256_cmp_ps(mm_a, mm_limit, _CMP_LT_OQ);
+		mm_a = _mm256_and_ps(mm_a, mask);
+		result = _mm256_add_ps(result, mm_a);
 	}
 	_mm256_store_ps(result_buff, result);
 
