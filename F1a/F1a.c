@@ -17,7 +17,7 @@ int main()
 
 	img1 = fopen(xIMG1_PATH, "rb");
 	img2 = fopen(xIMG2_PATH, "rb");
-	img_out = fopen("f1a.out.bmp", "wb");
+	img_out = fopen(F1a_PATH, "wb");
 
 	fread(bmp_header, BMP_HEADER, 1, img1);
 	fseek(img2, BMP_HEADER, SEEK_SET);
@@ -25,7 +25,7 @@ int main()
 	fread(img1_buff, BMP_DATA, 1, img1);
 	fread(img2_buff, BMP_DATA, 1, img2);
 
-	for (i = 0; i < 5992704; i += 32)
+	for (i = 0; i < BMP_DATA; i += 32)
 	{
 		__m256i mm_a = _mm256_load_si256((__m256i *)(img1_buff + i));
 		__m256i mm_b = _mm256_load_si256((__m256i *)(img2_buff + i));

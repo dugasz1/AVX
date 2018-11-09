@@ -23,7 +23,7 @@ int main()
 
 	img1 = fopen(xIMG1_PATH, "rb");
 	img2 = fopen(xIMG2_PATH, "rb");
-	img_out = fopen("f1b.out.bmp", "wb");
+	img_out = fopen(F1b_PATH, "wb");
 
 	fread(bmp_header, BMP_HEADER, 1, img1); //"seek" to the pos
 	fseek(img2, BMP_HEADER, SEEK_SET);
