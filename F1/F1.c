@@ -93,6 +93,7 @@ int main()
 	fwrite(bmp_header, BMP_HEADER, 1, img_out_f1b);
 	fwrite(out_buff_f1a, BMP_DATA, 1, img_out_f1a);
 	fwrite(out_buff_f1b, BMP_DATA, 1, img_out_f1b);
+	
 
 	/*fflush(img_out_f1a);
 	fclose(img_out_f1a);
