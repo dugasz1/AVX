@@ -31,7 +31,7 @@ int main()
 	for (i = 0; i < 8; i++)
 	{
 		sum += result_buff[i];
-		printf("%d.: %f \n", i, result_buff[i]);
+		//printf("%d.: %f \n", i, result_buff[i]);
 	}
 	printf("%f", sum);
 

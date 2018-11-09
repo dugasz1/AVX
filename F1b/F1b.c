@@ -35,11 +35,6 @@ int main()
 	__m256i mm_eighty = _mm256_set1_epi16(eighty);
 	__m256i mm_twenty = _mm256_set1_epi16(twenty);
 
-	//unsigned char* t = xAllignedAlloc(32, 32);
-	//for (size_t i = 0; i < 32; i++)
-	//{
-	//	t[i] = i + 1;
-	//}
 	for (i = 0; i < 5992704; i += 32)
 	{
 		//Img1
