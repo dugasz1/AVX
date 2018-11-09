@@ -11,22 +11,22 @@ int main()
 	FILE *img1, *img2, *img_out;
 	
 	int i;
-	short eighty = 256 * 0.8; //round(256 * 0,8)
-	short twenty = 255 - eighty; //round(256 * 0,2)
+	short eighty = 204; //round(255 * 0,8)
+	short twenty = 51; //round(255 * 0,2)
 
 	//5992826 - 122 = 5992704 | 1632 x 1224 x 3 = 5992704
-	img1_buff = (unsigned char *)xAllignedAlloc(32, 5992704); 
-	img2_buff = (unsigned char *)xAllignedAlloc(32, 5992704); //5992704 % 32 = 0
-	out_buff = (unsigned char *)xAllignedAlloc(32, 5992704);
-	bmp_header = (unsigned char *)xAllignedAlloc(32, 122);
+	img1_buff = (unsigned char *)xAllignedAlloc(32, BMP_DATA); //5992704 % 32 = 0
+	img2_buff = (unsigned char *)xAllignedAlloc(32, BMP_DATA); 
+	out_buff = (unsigned char *)xAllignedAlloc(32, BMP_DATA);
+	bmp_header = (unsigned char *)xAllignedAlloc(32, BMP_HEADER);
 	result_buff = (unsigned char *)xAllignedAlloc(32, 32);
 
 	img1 = fopen(xIMG1_PATH, "rb");
 	img2 = fopen(xIMG2_PATH, "rb");
 	img_out = fopen("f1b.out.bmp", "wb");
 
-	fread(bmp_header, 122, 1, img1); //"seek" to the pos
-	fseek(img2, 0x7A, SEEK_SET);
+	fread(bmp_header, BMP_HEADER, 1, img1); //"seek" to the pos
+	fseek(img2, BMP_HEADER, SEEK_SET);
 
 	fread(img1_buff, BMP_DATA, 1, img1);
 	fread(img2_buff, BMP_DATA, 1, img2);
@@ -35,7 +35,7 @@ int main()
 	__m256i mm_eighty = _mm256_set1_epi16(eighty);
 	__m256i mm_twenty = _mm256_set1_epi16(twenty);
 
-	for (i = 0; i < 5992704; i += 32)
+	for (i = 0; i < BMP_DATA; i += 32)
 	{
 		//Img1
 		__m256i mm_a_l = _mm256_load_si256((__m256i *)(img1_buff + i));

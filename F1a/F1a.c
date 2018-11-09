@@ -10,20 +10,20 @@ int main()
 	int i;
 
 	//5992826 - 122 = 5992704 | 1632 x 1224 x 3 = 5992704
-	img1_buff = (unsigned char *)xAllignedAlloc(32, 5992704); 
-	img2_buff = (unsigned char *)xAllignedAlloc(32, 5992704);
-	out_buff = (unsigned char *)xAllignedAlloc(32, 5992704);
-	bmp_header = (unsigned char *)xAllignedAlloc(32, 122);
+	img1_buff = (unsigned char *)xAllignedAlloc(32, BMP_DATA);
+	img2_buff = (unsigned char *)xAllignedAlloc(32, BMP_DATA);
+	out_buff = (unsigned char *)xAllignedAlloc(32, BMP_DATA);
+	bmp_header = (unsigned char *)xAllignedAlloc(32, BMP_HEADER);
 
 	img1 = fopen(xIMG1_PATH, "rb");
 	img2 = fopen(xIMG2_PATH, "rb");
 	img_out = fopen("f1a.out.bmp", "wb");
 
-	fread(bmp_header, 122, 1, img1);
-	fseek(img2, 0x7A, SEEK_SET);
+	fread(bmp_header, BMP_HEADER, 1, img1);
+	fseek(img2, BMP_HEADER, SEEK_SET);
 
-	fread(img1_buff, 5992704, 1, img1);
-	fread(img2_buff, 5992704, 1, img2);
+	fread(img1_buff, BMP_DATA, 1, img1);
+	fread(img2_buff, BMP_DATA, 1, img2);
 
 	for (i = 0; i < 5992704; i += 32)
 	{
