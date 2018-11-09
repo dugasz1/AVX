@@ -33,7 +33,7 @@ int main()
 		sum += result_buff[i];
 		//printf("%d.: %f \n", i, result_buff[i]);
 	}
-	printf("%f", sum);
+	printf("%f\n", sum);
 
 	return 0;
 }
